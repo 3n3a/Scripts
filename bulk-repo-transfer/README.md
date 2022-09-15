@@ -1,14 +1,37 @@
 # Bulk Transfer of Github Repos
 
-## Prepartions
+## Guide
 
 1. Get an Access Token from Github
 2. Set `GITHUB_SECRET` to access token
-3. write names of repositories in your profile, into `repos.txt`
-4. Install bash, jq, and curl
+3. Install bash, jq, and curl
+4. Download archived repos with `get-archived-repos.sh`, into `repos.txt`
+5. Run the `bulk-transfer.sh` Script to transfer you repos
 
-## Run the Command
+## Run the Commands
+
+### Download your Archived Repos
+
+**For User**
+
+```bash
+bash get-archived-repos.sh <USERNAME> repos.txt
+```
+
+**For Organization**
+
+```bash
+bash get-archived-repos.sh <ORGANIZATION> repos.txt --org
+```
+
+### Transfer Repos
 
 ```bash
 bash transfer-bulk.sh <OWNER> <NEW_OWNER>
+```
+
+**Dry Run**
+
+```bash
+bash transfer-bulk.sh <OWNER> <NEW_OWNER> --dry-run
 ```

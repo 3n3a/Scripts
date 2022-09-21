@@ -11,7 +11,7 @@
 
 ## Examples
 
-* [Python Dataframes](python-dataframes/)
+* [Python Dataframes](python-dataframe/)
 
 ## Installer Scripts
 

@@ -26,3 +26,7 @@
 ### Scripts
 
 * [Install Bat](./installer-scripts/install-bat.sh)
+
+## Converter Scripts
+
+* [Pretty Print JSON](./converter-scripts/format-json.sh)

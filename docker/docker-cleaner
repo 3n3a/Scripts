@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Stop All Containers, even running ones
+#
+# INSTALLATION:
+#    into: /usr/local/bin/docker-cleaner
+#    then: chmod +x /usr/local/bin/docker-cleaner
+
+echo "STOPPING ALL CONTAINERS"
+docker rm -f $(docker ps -a -q)

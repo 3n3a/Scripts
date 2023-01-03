@@ -1,3 +1,5 @@
+# Ubuntu
+# Install needes Packages: sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-fonts-extra
 
 # Download the template for linux
 mkdir /usr/share/pandoc/data/templates/eisvogel

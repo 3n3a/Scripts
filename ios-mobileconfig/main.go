@@ -33,7 +33,7 @@ type model struct {
 
 func initialModel() model {
 	m := model{
-		inputs: make([]textinput.Model, 10),
+		inputs: make([]textinput.Model, 11),
 	}
 
 	var t textinput.Model
@@ -52,48 +52,35 @@ func initialModel() model {
 		case 1:
 			t.Prompt = "Email: "
 			t.Placeholder = "Your Email Address (hello@example.com)"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
 		case 2:
 			t.Prompt = "Identifier: "
 			t.Placeholder = "Profile Identifiert (com.example.mail)"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
 		case 3:
+			t.Prompt = "Organization: "
+			t.Placeholder = "Your Name / Company"
+		case 4:
 			t.Prompt = "Incoming Mail Server: "
 			t.Placeholder = "Address of incoming Mail Server (mail.example.com)"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
-		case 4:
+		case 5:
 			t.Prompt = "Incoming Mail Port: "
 			t.Placeholder = "Port of Mail Server"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
-		case 5:
+		case 6:
 			t.Prompt = "Outgoing Mail Server: "
 			t.Placeholder = "Address of outgoing Mail Server (mail.example.com)"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
-		case 6:
+		case 7:
 			t.Prompt = "Outgoing Mail Port: "
 			t.Placeholder = "Port of Mail Server"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
-		case 7:
+		case 8:
 			t.Prompt = "Mail Server Username: "
 			t.Placeholder = "Username for your Mail Server (Email)"
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
-		case 8:
+		case 9:
 			t.Prompt = "Mail Server Password: "
 			t.EchoMode = textinput.EchoPassword
 			t.EchoCharacter = '•'
-		case 9:
+		case 10:
 			t.Prompt = "Filename of Configuration: "
 			t.Placeholder = "Generating filename..."
 			t.CharLimit = 128
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
 		}
 
 		m.inputs[i] = t
@@ -161,9 +148,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				if (len(m.inputs[2].Value()) > 0){
-					m.inputs[9].SetValue(fmt.Sprintf("%s.mobileconfig", m.inputs[2].Value()))
+					m.inputs[10].SetValue(fmt.Sprintf("%s.mobileconfig", m.inputs[2].Value()))
 				} else{
-					m.inputs[9].Placeholder = "Generating filename..."
+					m.inputs[10].Placeholder = "Generating filename..."
 				} 
 
 				// Remove focused state
@@ -226,7 +213,7 @@ func main() {
 
 func createIOSProfile(m model) {
 	incomingPort, _ := strconv.Atoi(m.inputs[5].Value())
-	outgoingPort, _ := strconv.Atoi(m.inputs[6].Value())
+	outgoingPort, _ := strconv.Atoi(m.inputs[7].Value())
 	c := &mobileconfig.Config{
 		DisplayName: m.inputs[0].Value(),
 		EmailAddress: m.inputs[1].Value(),
@@ -236,19 +223,19 @@ func createIOSProfile(m model) {
 			Hostname: m.inputs[4].Value(),
 			Port: incomingPort,
 			Tls: true,
-			Username: m.inputs[7].Value(),
-			Password: m.inputs[8].Value(),
+			Username: m.inputs[8].Value(),
+			Password: m.inputs[9].Value(),
 		},
 		Smtp: &mobileconfig.Smtp{
-			Hostname: m.inputs[5].Value(),
+			Hostname: m.inputs[6].Value(),
 			Port: outgoingPort,
 			Tls: false,
-			Username: m.inputs[7].Value(),
-			Password: m.inputs[8].Value(),
+			Username: m.inputs[8].Value(),
+			Password: m.inputs[9].Value(),
 		},
 	}
 
-	filename := m.inputs[9].Value()
+	filename := m.inputs[10].Value()
 
 	f, err := os.Create(filename)
 	if err != nil {

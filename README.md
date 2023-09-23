@@ -26,6 +26,7 @@
 ### Scripts
 
 * [Install Bat](./installer-scripts/install-bat.sh)
+* [Libre Office MacOS - Install Language Pack DE Extension](./installer-scripts/install_lang_pack_de_libre_office.sh)
 
 ## Converter Scripts
 

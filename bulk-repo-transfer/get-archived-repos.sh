@@ -16,56 +16,89 @@ get_user_repos() {
   # $1: USERNAME
   # $2: TYPE // type of repos (all, public...)
   # $3: OUTPUT_FILENAME
-  get_repos "users" "$1" "$2" "$3"
+  url="https://api.github.com/user/repos?per_page=100&type=$2"
+  curl -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer $GITHUB_SECRET" "$url" -o /tmp/get-repos.json
+
+  cat /tmp/get-repos.json \
+     | jq -r ".[] | if (.archived == true) and (.full_name | startswith(\"$1/\")) then(.name) else \"\" end" \
+     | sed '/^$/d' /dev/stdin \
+     | cp /dev/stdin "$3"
 }
 
 get_org_repos() {
   # $1: ORGNAME
   # $2: TYPE
   # $3: OUTPUT_FILENAME
-  get_repos "orgs" "$1" "$2" "$3"
+  url="https://api.github.com/orgs/$1/repos?per_page=100&type=$2"
+  curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_SECRET" "$url" -o /tmp/get-repos.json
+
+  cat /tmp/get-repos.json \
+     | jq -r ".[] | if (.archived == true) and (.full_name | startswith(\"$1/\")) then(.name) else \"\" end" \
+     | sed '/^$/d' /dev/stdin \
+     | cp /dev/stdin "$3"
 }
 
-get_repos() {
-  # $1: ENDPOINT (users, orgs)
-  # $2: NAME (username, orgname)
-  # $3: TYPE (all, public...)
-  # $4: OUTPUT_FILENAME
-  url="https://api.github.com/$1/$2/repos?per_page=100&type=$3"
-  curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_SECRET" "$url" -o- \
-     | jq -r ".[] | if (.archived == true) and (.full_name | startswith(\"$2/\")) then(.name) else \"\" end" \
-     | sed '/^$/d' /dev/stdin \
-     | cp /dev/stdin "$4"
+cleanup() {
+  rm -rf /tmp/get-repos.json
 }
 
 show_help() {
   cat <<EOF
-get-archived-repos - Gets Archived Github Repos [version 1.0]
+get-archived-repos - Gets Archived Github Repos [version 2.0]
 
-Usage:    get-archived-repos.sh [USERNAME] [OUTPUTFILE]
-          get-archived-repos.sh [ORGNAME] [OUTPUTFILE] --org
+Usage:    get-archived-repos.sh [-n USERNAME] [-f OUTPUTFILE]
+          get-archived-repos.sh [-n ORGNAME] [-f OUTPUTFILE] --org
+
+Other options:
+          -h     This help
+	  -c     No cleanup
 EOF
 }
 
 # DEBUG
 # echo -e "PARAMETERS\nONE: [$1]; TWO: [$2]; THREE: [$3]\n"
 
-name=$1
-filename=$2
+name=""
+filename=""
+org_mode="false"
+no_clean="false"
 
-if [[ ($1 == "-h") || ($1 == "--help") || ($1 == "") ]]; then
-  show_help
+while getopts "hcn:f:o::" option
+do
+    case $option in
+        h|--help)
+                show_help
+                exit 0;;
+	n|--name)
+		name=$OPTARG;;
+	f|--file)
+		filename=$OPTARG;;
+	o|--org)
+		org_mode="true";;
+	c|--no-clean)
+		no_clean="true";;
+	*)
+		show_help
+		exit 0;;
+    esac
+done
 
-elif [[ -z "$GITHUB_SECRET" ]]; then
-  echo -e "Error: Please set GITHUB_SECRET Environment Variable\n\nExample: export GITHUB_SECRET=\"<your_token>\""
+if [[ -z "$GITHUB_SECRET" ]]; then
+  echo -e "Error: Please set GITHUB_SECRET Environment Variable\n\nExample: export GITHUB_SECRET=\"<your_token>\"\n\nGet your Token here: https://github.com/settings/tokens"
   exit 1
 
-elif [[ -n $1 && -n $2 && ($3 == "--org") ]]; then
+elif [[ -n $name && -n $filename && ($org_mode == "true") ]]; then
   echo "Getting Repos of organization $name, saving to $filename."
   get_org_repos "$name" "all" "$filename"
 
-elif [[ -n $1 && -n $2 ]]; then
+elif [[ -n $name && -n $filename ]]; then
   echo "Getting Repos of user $name, saving to $filename."
   get_user_repos "$name" "all" "$filename"
 
+fi
+
+if [[ "$no_clean" = "false" ]]; then
+	echo "Cleanup"
+	cleanup
+	exit 0
 fi

@@ -1,0 +1,6 @@
+#!/bin/bash
+# 
+# Ubuntu Shell in self-built image
+#
+
+docker run -w /opt -v /mnt/user/EneaDrive:/opt --pull always --rm -it docker.io/3n3a/ubuntu:latest /bin/bash

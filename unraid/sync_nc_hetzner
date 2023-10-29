@@ -1,0 +1,13 @@
+#!/bin/bash
+# 
+# User Script: Sync Nextcloud Servers
+#
+
+# logging
+exec > >(tee --append --ignore-interrupts $(dirname ${0})/log.txt) 2>&1
+
+echo "Nextcloud Sync"
+echo "====================="
+echo "Sync Unraid <--> Hetzner"
+# --resync will make sure same files are lefta nd right
+rclone bisync -v nc-unraid: nc-hetzner:

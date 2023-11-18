@@ -2,6 +2,9 @@
 #
 # INSTALL PROMETHEUS
 #
+# Command:
+# curl -fsSL -o- https://raw.githubusercontent.com/3n3a/Scripts/master/installer-scripts/install-prometheus-agent.sh | sudo bash
+set -x
 
 prometheus_exporter_version="1.7.0"
 prometheus_exporter_file="node_exporter-$prometheus_exporter_version.linux-amd64.tar.gz"

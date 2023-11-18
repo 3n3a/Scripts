@@ -3,7 +3,7 @@
 # INSTALL PROMETHEUS
 #
 
-prometheus_exporter_version="1.5.0"
+prometheus_exporter_version="1.7.0"
 prometheus_exporter_file="node_exporter-$prometheus_exporter_version.linux-amd64.tar.gz"
 prometheus_exporter_folder="node_exporter-$prometheus_exporter_version.linux-amd64"
 prometheus_exporter_url="https://github.com/prometheus/node_exporter/releases/download/v$prometheus_exporter_version/$prometheus_exporter_file"

@@ -5,6 +5,8 @@ go_arch="amd64"
 
 if [ arch -eq "armv7l" ]; then
   go_arch="armv6l"
+elif [ arch -eq "aarch64" ]; then
+  go_arch="arm64"
 fi
 
 mkdir -p /tmp/go-install

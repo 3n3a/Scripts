@@ -1,4 +1,6 @@
-#install go
+#!/bin/bash
+
+set -x
 
 arch=$(uname -m)
 go_arch="amd64"

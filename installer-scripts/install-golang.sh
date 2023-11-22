@@ -13,7 +13,7 @@ fi
 
 mkdir -p /tmp/go-install
 cd /tmp/go-install
-curl -fsSL --output go.tar.gz "https://go.dev/dl/$(curl "https://go.dev/VERSION?m=text").linux-${go_arch}.tar.gz"
+curl -fsSL --output go.tar.gz "https://go.dev/dl/$(curl "https://go.dev/VERSION?m=text" | head -n 1).linux-${go_arch}.tar.gz"
 rm -rf /usr/local/go
 tar -C /usr/local/ -xzf go.tar.gz
 echo "export PATH=\$PATH:/usr/local/go/bin" | sudo tee -a /etc/profile

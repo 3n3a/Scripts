@@ -3,9 +3,9 @@
 arch=$(uname -m)
 go_arch="amd64"
 
-if [ arch -eq "armv7l" ]; then
+if [[ "$arch" -eq "armv7l" ]]; then
   go_arch="armv6l"
-elif [ arch -eq "aarch64" ]; then
+elif [[ "$arch" -eq "aarch64" ]]; then
   go_arch="arm64"
 fi
 

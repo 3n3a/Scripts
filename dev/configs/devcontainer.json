@@ -20,6 +20,7 @@
 		}
 	},
 	"remoteEnv": {
+		
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
 	"customizations": {
@@ -43,7 +44,8 @@
 			]
 		}
 	},
+	"postCreateCommand": "bash -c 'git config --global user.email \"info@3n3a.ch\" && git config --global user.name \"3n3a\"'",
 	"mounts": [
-		"type=bind,source=/home/${localEnv:USER}/.ssh,target=/root/.ssh,readonly"
+		"type=bind,source=/home/user/.ssh,target=/home/codespace/.ssh,readonly"
 	]
 }

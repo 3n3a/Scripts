@@ -42,5 +42,8 @@
 				"ms-python.black-formatter"
 			]
 		}
-	}
+	},
+	"mounts": [
+		"type=bind,source=/home/${localEnv:USER}/.ssh,target=/root/.ssh,readonly"
+	]
 }

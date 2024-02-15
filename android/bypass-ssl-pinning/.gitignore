@@ -1,3 +1,4 @@
 frida-server
 *.img
 venv
+temp

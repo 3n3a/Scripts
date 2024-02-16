@@ -1,4 +1,4 @@
 #!/bin/bash
 # start frida on android
 
-adb shell "su -c 'killall frida-server && cd /data/local/tmp/ && ./frida-server'"
+adb shell "su -c 'cd /data/local/tmp/ && ./frida-server'"

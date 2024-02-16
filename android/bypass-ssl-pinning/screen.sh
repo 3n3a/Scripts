@@ -1,3 +1,3 @@
 #!/bin/bash
 
-scrcpy
+while; do scrcpy; sleep .5; done

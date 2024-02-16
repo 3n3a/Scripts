@@ -7,6 +7,19 @@
 * rooted android (with magisk)
 * proxy configured (current ip port 8080)
 
+setup frida-server
+
+```bash
+# setup environment
+./deps.sh
+
+# download locally
+./dl.sh
+
+# uploaded to phone
+./ul.sh
+```
+
 ### start proxy server
 
 locally

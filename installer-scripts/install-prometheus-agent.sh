@@ -6,9 +6,17 @@
 # curl -fsSL -o- https://raw.githubusercontent.com/3n3a/Scripts/master/installer-scripts/install-prometheus-agent.sh | sudo bash
 set -x
 
+arch=$(uname -m)
+use_arch="amd64"
+if [ "$arch" == "armv7l" ]; then
+  use_arch="armv6l"
+elif [ "$arch" == "aarch64" ]; then
+  use_arch="arm64"
+fi
+
 prometheus_exporter_version="1.7.0"
-prometheus_exporter_file="node_exporter-$prometheus_exporter_version.linux-amd64.tar.gz"
-prometheus_exporter_folder="node_exporter-$prometheus_exporter_version.linux-amd64"
+prometheus_exporter_file="node_exporter-$prometheus_exporter_version.linux-$use_arch.tar.gz"
+prometheus_exporter_folder="node_exporter-$prometheus_exporter_version.linux-$use_arch"
 prometheus_exporter_url="https://github.com/prometheus/node_exporter/releases/download/v$prometheus_exporter_version/$prometheus_exporter_file"
 dir="/tmp/install-prometheus"
 

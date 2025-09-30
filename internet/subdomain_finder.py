@@ -146,7 +146,7 @@ def output_results(domain: str, queries: List[str], results: List[dict]):
     if not results:
         return
 
-    file_name = "results-" + domain + "-" + "-".join(queries) + "-" + datetime.today('%Y-%m-%d-%H-%M-%S') + ".json"
+    file_name = "results-" + domain + "-" + "-".join(queries) + "-" + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".json"
     with open(file_name, 'w') as fp:
         json.dump(results, fp)
 

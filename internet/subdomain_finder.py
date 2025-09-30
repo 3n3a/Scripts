@@ -11,6 +11,8 @@ import concurrent.futures
 from typing import List, Set, Tuple
 import sys
 import argparse
+from datetime import datetime
+import json
 
 # Configuration
 SEPARATORS = ["", "-"]
@@ -139,6 +141,18 @@ def batch_query_subdomains(subdomains: Set[str], max_workers: int = 50,
     
     return all_results
 
+def output_results(domain: str, queries: List[str], results: List[dict]):
+    """Output results to file in json format"""
+    if not results:
+        return
+
+    file_name = "results-" + domain + "-" + "-".join(queries) + "-" + datetime.today('%Y-%m-%d-%H-%M-%S') + ".json"
+    with open(file_name, 'w') as fp:
+        json.dump(results, fp)
+
+    print(f"Saved results to file: {file_name}")
+    return
+
 
 def print_results(results: List[dict]):
     """Print results in a formatted way."""
@@ -237,6 +251,12 @@ Examples:
         action="store_true",
         help="Show all attempts, not just found subdomains"
     )
+
+    parser.add_argument(
+        "-o", "--output",
+        action="store_true",
+        help="Output results to file in JSON format"
+    )
     
     args = parser.parse_args()
     
@@ -290,6 +310,9 @@ Examples:
     # Batch query DNS
     results = batch_query_subdomains(subdomains, max_workers=args.workers, verbose=args.verbose)
     
+    if args.output:
+        output_results(args.domain, queries, results)
+
     # Print results
     print_results(results)
 
